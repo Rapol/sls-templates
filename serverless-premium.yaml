@@ -1,0 +1,88 @@
+service: apim-premium-test
+
+plugins:
+  - serverless-azure-functions
+
+provider:
+  name: azure
+  region: ${opt:region, 'West US 2'}
+  stage: ${opt:stage, 'dev'}
+  runtime: nodejs10.x
+  prefix: sprkt3
+  resourceGroup: ${opt:rg}
+  subscriptionId: ${opt:subid}
+  type: premium
+  appServicePlan:
+    sku:
+      tier: PremiumV2
+      name: P1v2
+  apim:
+    sku:
+      name: developer
+      capacity: 1
+      publisherEmail: rafael.polabellas@dematic.com
+      publisherName: Rafael Pol
+    apis:
+      - name: salute-api
+        subscriptionRequired: false
+        displayName: salute
+        description: Salute sample app APIs
+        protocols:
+          - https
+        path: salute
+        authorization: none
+    backends:
+        # Defining only one backend for the whole /api
+      - name: salute-backend
+        url: api
+
+package:
+  # include:
+  #   - include-me.js
+  #   - include-me-dir/**
+  exclude:
+    # - exclude-me.js
+    # - exclude-me-dir/**
+    - local.settings.json
+    - .vscode/**
+
+functions:
+  hello:
+    handler: src/handlers/hello.sayHello
+    # API Management configuration for `hello` handler
+    apim:
+      # The API to attach this operation
+      api: salute-api
+      # The Backend use for the operation
+      backend: salute-backend
+      operations:
+        # GET operation for `sayHello` handler
+        - method: get
+          # URL path for accessing handler
+          urlTemplate: hello
+          # Display name inside Azure Portal
+          displayName: Hello
+    events:
+      - http: true
+        x-azure-settings:
+          methods:
+            - GET
+          authLevel: anonymous
+          route: hello
+
+  goodbye:
+    handler: src/handlers/goodbye.sayGoodbye
+    apim:
+      api: salute-api
+      backend: salute-backend
+      operations:
+        - method: get
+          urlTemplate: bye
+          displayName: Goodbye
+    events:
+      - http: true
+        x-azure-settings:
+          methods:
+            - GET
+          authLevel: anonymous
+          route: bye

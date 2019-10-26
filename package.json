@@ -4,8 +4,9 @@
   "description": "Azure Functions sample for the Serverless framework",
   "scripts": {
     "test": "echo \"No tests yet...\"",
-    "azure:deploy:personal": "SLS_DEBUG=* sls deploy --rg app-sprocket3-dev-rg --subid 713df834-2447-405a-bb60-531a40e6b094",
-    "azure:remove:personal": "SLS_DEBUG=* sls remove --rg app-sprocket3-dev-rg --subid 713df834-2447-405a-bb60-531a40e6b094",
+    "azure:deploy:premium": "SLS_DEBUG=* sls deploy --config serverless-premium.yaml --rg Dematic-Sprocket3-Dev-rg --subid bd507a51-237f-435d-b67b-e84044277b53",
+    "azure:deploy:consumption": "SLS_DEBUG=* sls deploy --rg Dematic-Sprocket3-Dev-rg --subid 713df834-2447-405a-bb60-bd507a51-237f-435d-b67b-e84044277b53",
+    "azure:deploy:consumption:personal": "SLS_DEBUG=* sls deploy --rg app-sprocket3-dev-rg --subid 713df834-2447-405a-bb60-531a40e6b094",
     "start": "func host start"
   },
   "keywords": [
