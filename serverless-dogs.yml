@@ -30,7 +30,7 @@ provider:
         authorization: none
     backends:
       - name: dogs-backend
-        url: api
+        url: api/dogs
     cors:
       allowCredentials: false
       allowedOrigins:
@@ -66,7 +66,7 @@ functions:
       operations:
         - method: get
           # URL path for accessing handler
-          urlTemplate: /dogs
+          urlTemplate: /
           # Display name inside Azure Portal
           displayName: get-dogs
     events:
@@ -75,3 +75,4 @@ functions:
           methods:
             - GET
           authLevel: anonymous
+          route: dogs
