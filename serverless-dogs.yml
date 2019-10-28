@@ -1,0 +1,77 @@
+service: apim-dogs
+
+plugins:
+  - serverless-azure-functions
+
+provider:
+  name: azure
+  region: ${opt:region, 'West US 2'}
+  stage: ${opt:stage, 'dev'}
+  runtime: nodejs10.x
+  prefix: sprkt3
+  resourceGroup: ${opt:rg}
+  subscriptionId: ${opt:subid}
+
+  environment:
+    VARIABLE_FOO: 'foo'
+
+  apim:
+    name: pets-api
+    sku:
+      name: consumption
+    apis:
+      - name: dogs-api
+        subscriptionRequired: false # if true must provide an api key
+        displayName: dogs
+        description: Dog sample app APIs
+        protocols:
+          - https
+        path: dogs
+        authorization: none
+    backends:
+      - name: dogs-backend
+        url: api
+    cors:
+      allowCredentials: false
+      allowedOrigins:
+        - "*"
+      allowedMethods:
+        - GET
+        - POST
+        - PUT
+        - DELETE
+        - PATCH
+      allowedHeaders:
+        - "*"
+      exposeHeaders:
+        - "*"
+
+# you can add packaging information here
+package:
+  # include:
+  #   - include-me.js
+  #   - include-me-dir/**
+  exclude:
+    # - exclude-me.js
+    # - exclude-me-dir/**
+    - local.settings.json
+    - .vscode/**
+
+functions:
+  dogs:
+    handler: src/handlers/dogs.getDogs
+    apim:
+      api: dogs-api
+      backend: dogs-backend
+      operations:
+        - method: get
+          # URL path for accessing handler
+          urlTemplate: /dogs
+          # Display name inside Azure Portal
+          displayName: get-dogs
+    events:
+      - http: true
+        x-azure-settings:
+          methods:
+            - GET
+          authLevel: anonymous

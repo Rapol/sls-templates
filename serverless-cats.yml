@@ -1,0 +1,77 @@
+service: apim-cats
+
+plugins:
+  - serverless-azure-functions
+
+provider:
+  name: azure
+  region: ${opt:region, 'West US 2'}
+  stage: ${opt:stage, 'dev'}
+  runtime: nodejs10.x
+  prefix: sprkt3
+  resourceGroup: ${opt:rg}
+  subscriptionId: ${opt:subid}
+
+  environment:
+    VARIABLE_FOO: 'foo'
+
+  apim:
+    name: pets-api
+    sku:
+      name: consumption
+    apis:
+      - name: cats-api
+        subscriptionRequired: false # if true must provide an api key
+        displayName: cats
+        description: Cat sample app APIs
+        protocols:
+          - https
+        path: cats
+        authorization: none
+    backends:
+      - name: cats-backend
+        url: api
+    cors:
+      allowCredentials: false
+      allowedOrigins:
+        - "*"
+      allowedMethods:
+        - GET
+        - POST
+        - PUT
+        - DELETE
+        - PATCH
+      allowedHeaders:
+        - "*"
+      exposeHeaders:
+        - "*"
+
+# you can add packaging information here
+package:
+  # include:
+  #   - include-me.js
+  #   - include-me-dir/**
+  exclude:
+    # - exclude-me.js
+    # - exclude-me-dir/**
+    - local.settings.json
+    - .vscode/**
+
+functions:
+  cats:
+    handler: src/handlers/cats.getCats
+    apim:
+      api: cats-api
+      backend: cats-backend
+      operations:
+        - method: get
+          # URL path for accessing handler
+          urlTemplate: /cats
+          # Display name inside Azure Portal
+          displayName: get-cats
+    events:
+      - http: true
+        x-azure-settings:
+          methods:
+            - GET
+          authLevel: anonymous
