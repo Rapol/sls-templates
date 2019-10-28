@@ -16,19 +16,27 @@ provider:
     VARIABLE_FOO: 'foo'
 
   apim:
+    ## name of global APIM that will be reused
     name: pets-api
     sku:
       name: consumption
     apis:
+      # APIs that will be added to the global APIM
+      # We could theoretically define multiple APIs in one service if wanted
       - name: cats-api
         subscriptionRequired: false # if true must provide an api key
         displayName: cats
         description: Cat sample app APIs
         protocols:
           - https
+        # Path that will attach to the APIM, ie https://pets-api.azure-api.net/cats/
         path: cats
         authorization: none
     backends:
+      # Im not entirely sure what backends really are, Im not sure if they are an APIM concept.
+      # Based on what I have seen a backend is any path that we declare as a service/backend
+      # All backend URLs start with api since functions are deployed to {function-name}.azurewebsites.net/api
+      # In this case all functions are deployed to /cats, so we are defining a cats-backend that points to api/cats
       - name: cats-backend
         url: api/cats
     cors:
@@ -65,7 +73,7 @@ functions:
       backend: cats-backend
       operations:
         - method: get
-          # URL path for accessing handler
+          # URL path for accessing handler in APIM, since we defined the APIM path for cats-api as /cats this will then be /cats/
           urlTemplate: /
           # Display name inside Azure Portal
           displayName: get-cats
@@ -75,4 +83,5 @@ functions:
           methods:
             - GET
           authLevel: anonymous
+          # Need to use the cats path to make it a part of the cats-backend
           route: cats
