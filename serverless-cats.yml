@@ -33,10 +33,11 @@ provider:
         path: cats
         authorization: none
     backends:
-      # Im not entirely sure what backends really are, Im not sure if they are an APIM concept.
-      # Based on what I have seen a backend is any path that we declare as a service/backend
+      # Im not entirely sure what backends really are, dont know if they are really an official APIM concept.
+      # Based on what I have seen a backend is any path that we define as a "service", we can
+      # define a backend called documents with URL path /documents
       # All backend URLs start with api since functions are deployed to {function-name}.azurewebsites.net/api
-      # In this case all functions are deployed to /cats, so we are defining a cats-backend that points to api/cats
+      # In this project, all functions are deployed to /cats, so we are defining a cats-backend that points to api/cats
       - name: cats-backend
         url: api/cats
     cors:
