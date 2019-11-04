@@ -1,3 +1,3 @@
-# Azure Functions
+# Welcome to sls-templates 👋
 
-Refer to [Serverless docs](https://serverless.com/framework/docs/providers/azure/guide/intro/) for more information.
+> Serverless templates for all your use cases

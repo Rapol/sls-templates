@@ -1,0 +1,19 @@
+{
+  "name": "sls-reusable-apim",
+  "version": "1.0.0",
+  "description": "Azure Functions sample for the Serverless framework",
+  "scripts": {
+    "test": "echo \"No tests yet...\"",
+    "azure:deploy:cats": "SLS_DEBUG=* sls deploy --config serverless-cats.yml --rg EDIT_ME --subid EDIT_ME",
+    "azure:deploy:dogs": "SLS_DEBUG=* sls deploy --config serverless-dogs.yml --rg EDIT_ME --subid EDIT_ME",
+    "start": "func host start"
+  },
+  "keywords": [
+    "azure",
+    "serverless"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "serverless-azure-functions": "^1.0.0"
+  }
+}

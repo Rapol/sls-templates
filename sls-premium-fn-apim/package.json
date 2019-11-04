@@ -1,0 +1,18 @@
+{
+  "name": "sls-premium-fn-apim",
+  "version": "1.0.0",
+  "description": "Azure Functions sample for the Serverless framework",
+  "scripts": {
+    "test": "echo \"No tests yet...\"",
+    "azure:deploy:premium": "SLS_DEBUG=* sls deploy --rg Dematic-Sprocket3-Dev-rg --subid bd507a51-237f-435d-b67b-e84044277b53",
+    "start": "func host start"
+  },
+  "keywords": [
+    "azure",
+    "serverless"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "serverless-azure-functions": "^1.0.0"
+  }
+}
