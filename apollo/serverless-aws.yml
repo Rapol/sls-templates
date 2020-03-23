@@ -1,0 +1,27 @@
+service: multicloud-demo
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+# frameworkVersion: "=X.X.X"
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+  region: us-east-1
+  stage: dev
+
+plugins:
+  - serverless-offline
+  - serverless-webpack
+
+functions:
+  graphql:
+    handler: src/app.handler
+    events:
+    - http:
+        path: graphql
+        method: post
+        cors: true
+    - http:
+        path: graphql
+        method: get

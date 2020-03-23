@@ -1,0 +1,175 @@
+# Welcome to Serverless!
+#
+# This file is the main config file for your service.
+# It's very minimal at this point and uses default values.
+# You can always add more config options for more control.
+# We've included some commented out config examples here.
+# Just uncomment any of them to get that config option.
+#
+# For full config options, check the docs:
+#    docs.serverless.com
+#
+# Happy Coding!
+
+service: multicloud-demo
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+# frameworkVersion: "=X.X.X"
+
+provider:
+  prefix: ${opt:prefix, 'sls'}
+  name: azure
+  region: East US
+  runtime: nodejs10.x
+  apim:
+    apis:
+    backends:
+      - name: games-backend
+        url: api/games
+      - name: health-backend
+        url: api/health
+    cors:
+      allowCredentials: false
+      allowedOrigins:
+        - "*"
+      allowedMethods:
+        - GET
+        - POST
+        - PUT
+        - DELETE
+        - PATCH
+      allowedHeaders:
+        - "*"
+      exposeHeaders:
+        - "*"
+
+plugins:
+  - serverless-azure-functions
+  - serverless-webpack
+
+functions:
+  # Health
+  ping:
+    handler: src/handlers/health.ping
+    events:
+      - http: true
+        x-azure-settings:
+          methods:
+            - GET
+          route: health
+          authLevel: anonymous
+    apim:
+      api: health-api
+      backend: health-backend
+      operations:
+        - method: GET
+          urlTemplate: /
+  # Games
+  getGameList:
+    handler: src/handlers/games.getGameList
+    events:
+      - http: true
+        x-azure-settings:
+          methods:
+            - GET
+          route: games
+          authLevel: anonymous
+    apim:
+      api: games-api
+      backend: games-backend
+      operations:
+        - method: GET
+          urlTemplate: /
+
+  getGame:
+    handler: src/handlers/games.getGame
+    events:
+      - http: true
+        x-azure-settings:
+          methods:
+            - GET
+          route: games/{gameId}
+          authLevel: anonymous
+    apim:
+      api: games-api
+      backend: games-backend
+      operations:
+        - method: GET
+          urlTemplate: /{gameId}
+          templateParameters:
+            - name: gameId
+              type: string
+
+  postGame:
+    handler: src/handlers/games.postGame
+    events:
+      - http: true
+        x-azure-settings:
+          methods:
+            - POST
+          route: games
+          authLevel: anonymous
+    apim:
+      api: games-api
+      backend: games-backend
+      operations:
+        - method: POST
+          urlTemplate: /
+
+  putGame:
+    handler: src/handlers/games.putGame
+    events:
+      - http: true
+        x-azure-settings:
+          methods:
+            - PUT
+          route: games/{gameId}
+          authLevel: anonymous
+    apim:
+      api: games-api
+      backend: games-backend
+      operations:
+        - method: PUT
+          urlTemplate: /{gameId}
+          templateParameters:
+            - name: gameId
+              type: string
+
+  patchGame:
+    handler: src/handlers/games.patchGame
+    events:
+      - http: true
+        x-azure-settings:
+          methods:
+            - PATCH
+          route: games/{gameId}
+          authLevel: anonymous
+    apim:
+      api: games-api
+      backend: games-backend
+      operations:
+        - method: PATCH
+          urlTemplate: /{gameId}
+          templateParameters:
+            - name: gameId
+              type: string
+
+  deleteGame:
+    handler: src/handlers/games.deleteGame
+    events:
+      - http: true
+        x-azure-settings:
+          methods:
+            - DELETE
+          route: games/{gameId}
+          authLevel: anonymous
+    apim:
+      api: games-api
+      backend: games-backend
+      operations:
+        - method: DELETE
+          urlTemplate: /{gameId}
+          templateParameters:
+            - name: gameId
+              type: string

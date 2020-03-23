@@ -1,0 +1,68 @@
+service: multicloud-demo
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+# frameworkVersion: "=X.X.X"
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+  region: us-east-1
+  stage: dev
+
+plugins:
+  - serverless-offline
+  - serverless-webpack
+
+functions:
+  # Health
+  ping:
+    handler: src/handlers/health.ping
+    events:
+      - http:
+          method: GET
+          path: /health
+  # Games
+  getGameList:
+    handler: src/handlers/games.getGameList
+    events:
+      - http:
+          method: GET
+          path: /games
+  getGameListByGame:
+    handler: src/handlers/games.getGameListByGame
+    events:
+      - http:
+          method: GET
+          path: /games/{gameId}/games
+  getGame:
+    handler: src/handlers/games.getGame
+    events:
+      - http:
+          method: GET
+          path: /games/{gameId}
+  postGame:
+    handler: src/handlers/games.postGame
+    events:
+      - http:
+          method: POST
+          path: /games
+  putGame:
+    handler: src/handlers/games.putGame
+    events:
+      - http:
+          method: PUT
+          path: /games/{gameId}
+  patchGame:
+    handler: src/handlers/games.patchGame
+    events:
+      - http:
+          method: PATCH
+          path: /games/{gameId}
+  deleteGame:
+    handler: src/handlers/games.deleteGame
+    events:
+      - http:
+          method: DELETE
+          path: /games/{gameId}
+

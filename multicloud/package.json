@@ -1,0 +1,44 @@
+{
+  "name": "multicloud-demo",
+  "version": "1.0.0",
+  "description": "Azure Functions sample for the Serverless framework",
+  "scripts": {
+    "lint": "eslint src/**/*.js",
+    "test": "jest",
+    "start": "npm run start:azure",
+    "start:azure": "sls offline --config serverless-azure.yml",
+    "start:aws": "sls offline --config serverless-aws.yml",
+    "pack": "webpack",
+    "deploy": "npm run deploy:azure && npm run deploy:aws",
+    "deploy:aws": "sls deploy --config serverless-aws.yml",
+    "deploy:azure": "sls deploy --config serverless-azure.yml",
+    "update:multicloud:latest": "npm install @multicloud/sls-core@latest @multicloud/sls-azure@latest @multicloud/sls-aws@latest --save",
+    "update:multicloud:beta": "npm install @multicloud/sls-core@beta @multicloud/sls-azure@beta @multicloud/sls-aws@beta --save"
+  },
+  "keywords": [
+    "azure",
+    "serverless"
+  ],
+  "dependencies": {
+    "@multicloud/sls-aws": "^0.1.1",
+    "@multicloud/sls-azure": "^0.1.1",
+    "@multicloud/sls-core": "^0.1.1",
+    "shortid": "^2.2.14"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-node": "^9.2.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "jest": "^24.8.0",
+    "serverless-azure-functions": "^1.0.0",
+    "serverless-offline": "^5.10.1",
+    "serverless-webpack": "^5.3.1",
+    "webpack": "^4.33.0",
+    "webpack-cli": "^3.3.3"
+  }
+}

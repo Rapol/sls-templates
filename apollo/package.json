@@ -1,0 +1,40 @@
+{
+  "name": "apollo-demo",
+  "version": "1.0.0",
+  "description": "Azure Functions sample for the Serverless framework",
+  "scripts": {
+    "lint": "eslint src/**/*.js",
+    "test": "jest",
+    "start": "npm run start:azure",
+    "start:azure": "sls offline --config serverless-azure.yml",
+    "start:aws": "sls offline --config serverless-aws.yml",
+    "pack": "webpack",
+    "deploy": "npm run deploy:azure && npm run deploy:aws",
+    "deploy:aws": "sls deploy --config serverless-aws.yml",
+    "deploy:azure": "sls deploy --config serverless-azure.yml"
+  },
+  "keywords": [
+    "azure",
+    "serverless"
+  ],
+  "dependencies": {
+    "apollo-server-lambda": "^2.11.0",
+    "graphql": "^14.6.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-node": "^9.2.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "jest": "^24.8.0",
+    "serverless-azure-functions": "^1.0.0",
+    "serverless-offline": "^5.10.1",
+    "serverless-webpack": "^5.3.1",
+    "webpack": "^4.33.0",
+    "webpack-cli": "^3.3.3"
+  }
+}

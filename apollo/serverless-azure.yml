@@ -1,0 +1,81 @@
+service: multicloud-demo
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+# frameworkVersion: "=X.X.X"
+
+provider:
+  prefix: ${opt:prefix, 'sls'}
+  name: azure
+  region: East US
+  runtime: nodejs10.x
+  apim:
+    sku:
+      # This only works if you have the version 1.0.2 (or above) of azure plugin
+      name: developer
+      capacity: 1
+    # API specifications
+    apis:
+      - name: graphql-api
+        subscriptionRequired: false
+        # Display name
+        displayName: GraphQL API
+        # Description of API
+        description: GraphQL API
+        # HTTP protocols allowed
+        protocols:
+          - https
+        # Base path of API calls
+        path: graphql
+        # Tags for ARM resource
+        tags:
+          - graphql
+        # No authorization
+        authorization: none
+    backends:
+      - name: graphql
+        url: api/graphql
+    # CORS Settings for APIM
+    cors:
+      allowCredentials: false
+      allowedOrigins:
+        - "*"
+      allowedMethods:
+        - GET
+        - POST
+      allowedHeaders:
+        - "*"
+      exposeHeaders:
+        - "*"
+
+plugins:
+  - serverless-azure-functions
+  - serverless-webpack
+
+functions:
+  graphql:
+    handler: src/app.handler
+    apim:
+      api: graphql-api
+      backend: graphql
+      operations:
+        - name: postgraphql
+          method: POST
+          urlTemplate: /
+          displayName: POSTGraphQL
+        - name: getgraphql
+          method: GET
+          urlTemplate: /
+          displayName: GETGraphQL
+    events:
+      - http: true
+        x-azure-settings:
+          methods:
+            - POST
+            - GET
+          route: graphql
+          authLevel: anonymous
+      - http: true
+        x-azure-settings:
+          direction: out
+          name: $return
